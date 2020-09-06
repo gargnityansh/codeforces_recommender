@@ -35,7 +35,7 @@ def user_dataframe(handle):
 def problems_recommended(strong_areas, weak_areas):
 	strong_areas_problem = recommendation.user_recommendation(strong_areas, strong_areas)
 	weak_areas_problem = recommendation.user_recommendation(weak_areas, strong_areas)
-	return strong_areas_problem.to_json(), weak_areas_problem.to_json()
+	return strong_areas_problem, weak_areas_problem
 
 '''s_data, w_data = user_dataframe('bloodytiger')
 s,w = problems_recommended(s_data, w_data)

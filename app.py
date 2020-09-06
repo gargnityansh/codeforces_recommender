@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 import user_data_recommendation
+import pandas as pd
 
 app = Flask(__name__)
 
@@ -14,7 +15,7 @@ def recommend():
 	handle = request.form.get('userhandle')
 	s_data, w_data = user_data_recommendation.user_dataframe(handle)
 	s,w = user_data_recommendation.problems_recommended(s_data, w_data)
-	return str(s)+ ' ' + str(w)
+	return render_template('success.html',  tables=[s.to_html(classes='data', header="true")],titles =s.columns.values ,wtables=[w.to_html(classes='data', header="true")],wtitles =w.columns.values)
 
 
 if __name__ == '__main__':
