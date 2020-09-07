@@ -36,6 +36,7 @@ def get_recommendations(in_dataframe, name, recommended_df,from_df=problem_data,
 		else:
 			recommended_df = recommended_df.append(from_df.iloc[problem_id], ignore_index=True)
 	return recommended_df
+
 '''
 recommended_df = pd.DataFrame()
 in_dataframe = pd.DataFrame({'contestId':'47','index':'A' ,'name':['two'],'tags':'dp greedy', 'rating':'800', 'solvedCount':'50187','vector':'dp greedy 50187'})
@@ -50,10 +51,19 @@ def user_recommendation(user_dataframe, strong_dataframe):
 			user_recommendations_df = get_recommendations(strong_dataframe, row['name'], user_recommendations_df, problem_data,cosine_sim)
 		except:
 			pass
+	user_recommendations_df.drop_duplicates(subset='name',inplace=True)
+	user_recommendations_df.fillna(0, inplace=True)
+	user_recommendations_df[['contestId', 'rating', 'solvedCount']] = user_recommendations_df[['contestId', 'rating', 'solvedCount']].astype('int64')
+	user_recommendations_df.sort_values('solvedCount', ascending=False, inplace=True)
+	user_recommendations_df.drop(['vector'],axis=1,inplace=True)
 
-	return user_recommendations_df.drop_duplicates().sort_values('solvedCount', ascending='False')
+	return user_recommendations_df
 
-'''in_dataframe = pd.DataFrame({'contestId':'47','index':'A' ,'name':['Distinct Digits'],'tags':'brute force implementation', 'rating':'800.0', 'solvedCount':'15860','vector':'brute force implementation 800.0'})
-k = user_recommendation(in_dataframe)
+'''
+in_dataframe = pd.DataFrame({'contestId':'47','index':'A' ,'name':['Distinct Digits'],'tags':'brute force implementation', 'rating':'800', 'solvedCount':'15860','vector':'brute force implementation 800'})
+k = user_recommendation(in_dataframe, in_dataframe)
+k.fillna(0, inplace=True)
+k[['contestId', 'rating', 'solvedCount']] = k[['contestId', 'rating', 'solvedCount']].astype('int64')
+k.sort_values('solvedCount', ascending=False, inplace=True)
 print(k.head())
 '''

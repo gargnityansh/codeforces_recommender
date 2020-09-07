@@ -3,6 +3,10 @@ import requests
 from problem_set_data import convertToString
 import recommendation
 
+def createLink(row):
+	s = '<a href="https://codeforces.com/problemset/'+str(row['contestId']) +"/"+row['index']+">"+row['name']+"</a>"
+	return s
+
 #returns user submissions
 def user_dataframe(handle):
 	response = requests.get('https://codeforces.com/api/user.status?handle={}'.format(handle))
@@ -35,6 +39,8 @@ def user_dataframe(handle):
 def problems_recommended(strong_areas, weak_areas):
 	strong_areas_problem = recommendation.user_recommendation(strong_areas, strong_areas)
 	weak_areas_problem = recommendation.user_recommendation(weak_areas, strong_areas)
+	strong_areas_problem['links'] = strong_areas_problem.agg(lambda x: f"<a href=\"https://codeforces.com/problemset/problem/{x['contestId']}/{x['index']}\">{x['name']}</a>", axis=1)
+	weak_areas_problem['links'] = weak_areas_problem.agg(lambda x: f"<a href=\"https://codeforces.com/problemset/problem/{x['contestId']}/{x['index']}\">{x['name']}</a>", axis=1)
 	return strong_areas_problem, weak_areas_problem
 
 '''s_data, w_data = user_dataframe('bloodytiger')

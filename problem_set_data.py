@@ -37,7 +37,6 @@ problem_sets_data['tags'] = problem_sets_data['tags'].apply(convertToString)
 #adding an extra column vector which is used to calculate tdfidf matrix
 problem_sets_data['vector'] = problem_sets_data['tags'] + ' ' + problem_sets_data['rating'].astype(str)
 
+
 #exporting the file for later use
 problem_sets_data.to_csv("problem_sets_data.csv", index=False)
-
-
